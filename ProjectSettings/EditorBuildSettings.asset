@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/LeartesStudios/CoffeeShopInterior/URP/Scenes/CoffeeShopInteriorDAY.unity
+    guid: 79b77b99f469ac04cb13088d83ea956d
+  - enabled: 1
+    path: Assets/LeartesStudios/CoffeeShopInterior/URP/Scenes/CoffeeShopInteriorDAY_URPShaders.unity
+    guid: 5262317ece5e3b640b44d8ec57cc3977
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3990a55fa90e7c5408e3115381d15e7a, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 279c36dd1fc582945b8781ff7099b3f6, type: 2}
+  m_UseUCBPForAssetBundles: 0
