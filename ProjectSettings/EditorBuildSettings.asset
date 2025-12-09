@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: b999ebad65de8d84ab5b6ee113b0ea89
+  - enabled: 1
     path: Assets/Scenes/VRCoffeeShop.unity
     guid: 5262317ece5e3b640b44d8ec57cc3977
+  - enabled: 1
+    path: Assets/Scenes/VRCoffeeShopWithWaitress.unity
+    guid: 4f1b225244054d24b987ef0fc762b987
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3990a55fa90e7c5408e3115381d15e7a, type: 2}
