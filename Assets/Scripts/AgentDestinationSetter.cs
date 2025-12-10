@@ -15,19 +15,27 @@ public class AgentDestinationSetter : MonoBehaviour
     public string talkingAnimationName = "Talking";
     public float turnSpeed = 180f;
     public float talkingDuration = 3f;
-    public bool startSequenceOnStart = true; // NEW: Control if sequence runs at start
+    public bool startSequenceOnStart = true;
 
     private NavMeshAgent agent;
     private Animator animator;
     private Transform origin;
     private bool shouldFaceCamera = false;
     private bool isReturningToOrigin = false;
-    private Coroutine currentSequence; // NEW: Track current sequence
+    private Coroutine currentSequence;
+    private StateManagement stateManager;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        
+        // Cache StateManagement reference
+        stateManager = FindFirstObjectByType<StateManagement>();
+        if (stateManager == null)
+        {
+            Debug.LogWarning("StateManagement not found! Audio will not play.");
+        }
 
         if (vrCamera == null)
         {
@@ -113,8 +121,36 @@ public class AgentDestinationSetter : MonoBehaviour
         // Wait until arrived at destination
         yield return StartCoroutine(WaitForArrival());
 
-        // Play talking animation
+        // Play talking animation (audio plays inside)
         yield return StartCoroutine(PlayTalkingAnimation());
+
+        // Post-talking actions
+        if (stateManager != null)
+        {
+            // Phase-specific actions based on current phase
+            switch (stateManager.CurrentPhase)
+            {
+                case 1:
+                    stateManager.ShowObject(stateManager.menu);
+                    break;
+                    
+                case 2:
+                    stateManager.ShowObject(stateManager.food);
+                    break;
+                    
+                case 3:
+                    stateManager.ShowObject(stateManager.survey);
+                    break;
+                    
+                default:
+                    Debug.LogWarning($"No specific action defined for Phase {stateManager.CurrentPhase}");
+                    break;
+            }
+
+            // Advance to next phase
+            stateManager.NextPhase();
+            Debug.Log($"Advanced to Phase {stateManager.CurrentPhase}");
+        }
 
         // Wait in idle before returning (breathing animation plays)
         yield return new WaitForSeconds(delayBeforeReturning);
@@ -127,7 +163,7 @@ public class AgentDestinationSetter : MonoBehaviour
         yield return StartCoroutine(WaitForArrival());
 
         isReturningToOrigin = false;
-        currentSequence = null; // Mark sequence as complete
+        currentSequence = null;
         Debug.Log("Sequence complete!");
     }
 
@@ -151,10 +187,18 @@ public class AgentDestinationSetter : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("isTalking", true);
+            
+            // Play audio using cached reference
+            if (stateManager != null)
+            {
+                stateManager.PlayAudioForCurrentPhase();
+            }
+            
             float duration = talkingDuration;
             yield return new WaitForSeconds(duration);
             animator.SetBool("isTalking", false);
             yield return new WaitForSeconds(0.2f);
+
         }
     }
 
